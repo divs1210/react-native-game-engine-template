@@ -47,9 +47,18 @@ export default ({
 				collidesWith: 0xffffffff
 			})
 		],
-		collision: (self, other, contact) => {
-			if (!contact.close)
+		collision: (self, other, contact, entities, { gamepadController }) => {
+			if (!contact.close) {
 				crash();
+
+				const camera = entities.camera;
+
+				if (camera)
+					camera.shake();
+
+				if (gamepadController)
+					gamepadController.vibrate();
+			}
 		},
 		removable: (frustum, self) => !frustum.intersectsObject(self.model)
 	};
